@@ -2,7 +2,7 @@ name: Deploy Portfolio with Parcel
 
 on:
   push:
-    branches: [ "master" ]  # 或 master，取决于你的实际分支
+    branches: [ "master" ]
   workflow_dispatch:
 
 permissions:
@@ -36,7 +36,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist  # 这是 Parcel 的输出目录
+          path: ./dist
 
   deploy:
     needs: build
@@ -44,7 +44,11 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
+      - name: Download artifact
+        uses: actions/download-pages-artifact@v3
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
